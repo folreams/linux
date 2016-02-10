@@ -495,11 +495,21 @@
 					     "dsi1_ddr2",
 					     "dsi1_ddr";
 
-			pitouchscreen: panel@0 {
-				compatible = "raspberrypi,touchscreen";
+			lcd-bridge@0 {
+				compatible = "raspberrypi,7inch-touchscreen-bridge";
 				reg = <0>;
 
 				raspberrypi,touchscreen-bridge = <&pitouchscreen_bridge>;
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+						pitouchscreen_bridge_port: endpoint {
+							remote-endpoint = <&pitouchscreen_panel_port>;
+						};
+					};
+				};
 			};
 		};
 
@@ -613,6 +623,20 @@
 			#clock-cells = <0>;
 			clock-output-names = "otg";
 			clock-frequency = <480000000>;
+		};
+	};
+
+	lcd {
+		compatible = "raspberrypi,7inch-touchscreen-panel";
+		ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			port@0 {
+				reg = <0>;
+				pitouchscreen_panel_port: endpoint {
+					remote-endpoint = <&pitouchscreen_bridge_port>;
+				};
+			};
 		};
 	};
 };
