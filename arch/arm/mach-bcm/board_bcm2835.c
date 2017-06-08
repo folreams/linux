@@ -15,7 +15,6 @@
 #include <linux/init.h>
 #include <linux/irqchip.h>
 #include <linux/of_address.h>
-#include <linux/clk/bcm2835.h>
 #include <linux/irqchip/irq-bcm2836.h>
 
 #include <asm/mach/arch.h>
@@ -52,12 +51,6 @@ static const struct smp_operations bcm2836_smp_ops = {
 	.smp_boot_secondary	= bcm2836_smp_boot_secondary,
 };
 #endif
-
-static void __init bcm2835_init(void)
-{
-	bcm2835_init_clocks();
-}
-
 static const char * const bcm2835_compat[] = {
 #ifdef CONFIG_ARCH_MULTI_V6
 	"brcm,bcm2835",
@@ -69,7 +62,6 @@ static const char * const bcm2835_compat[] = {
 };
 
 DT_MACHINE_START(BCM2835, "BCM2835")
-	.init_machine = bcm2835_init,
 	.dt_compat = bcm2835_compat,
 	.smp = smp_ops(bcm2836_smp_ops),
 MACHINE_END
